@@ -6,6 +6,8 @@ from math import gamma
 #Define Objective Function
 
 def objective_fun(x):
+    # print(" objective")
+    # print(x)
     return np.sum(x**2)
 
 
@@ -33,15 +35,20 @@ def CS (obj_fun,pop_size = 50, Dim = 2, MaxT = 100, pa = 0.25):
     for i in range(MaxT):
         #Generate New Solutoion by Levy Flight
         new_population = np.empty_like(population)
+        #print(new_population)
 
         for j, nest in enumerate(population):
+            #print (j,nest)
             Step_size = Levy_flight(1.5)
             Step_Direction = np.random.uniform(-1,1,size=Dim)
             new_nest = nest + Step_size * Step_Direction
             new_population[j] = new_nest
+            #print(j,new_population[j])
 
             #Check Bounds [-5,5]
             new_population[j] = np.clip(new_population[j],-5,5)
+            #print(j,new_population[j])
+
 
 
         #Calculate New Solution Fitness
@@ -49,11 +56,13 @@ def CS (obj_fun,pop_size = 50, Dim = 2, MaxT = 100, pa = 0.25):
 
         #Compare and Replace Solutions
         replace_soln = np.where(new_fitness < fitness)[0]
+        #print(replace_soln)
         population[replace_soln] = new_population[replace_soln]
         fitness[replace_soln] = new_fitness[replace_soln]
 
         #Sort Population 
         sorted_soln = np.argsort(fitness)
+        #print(sorted_soln)
         population = population[sorted_soln]
         fitness = fitness[sorted_soln]
 
@@ -66,6 +75,8 @@ def CS (obj_fun,pop_size = 50, Dim = 2, MaxT = 100, pa = 0.25):
         abandon_egg = int(pa*pop_size)
         abandon_soln = np.random.choice(pop_size,size=abandon_egg, replace=False)
         population[abandon_soln] = initial_population(abandon_egg,Dim)
+        print ("abodan solon")
+        print (population[abandon_soln])
         fitness[abandon_soln] = np.array([obj_fun(nest) for nest in population[abandon_soln]])
         print(f"Iteration {i+1}/{MaxT}: Best_fitness= {best_fitness}")
 
