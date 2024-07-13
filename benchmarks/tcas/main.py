@@ -1,8 +1,8 @@
 '''  
 =================================================================
 	@version  2.0
-	@author   Ashwin Ramadevanahalli
-	@title    Testing.
+	@author   Chinonso OKereke
+	@title    TCP with CSO and GA.
 
 
 	Main module.
@@ -27,8 +27,9 @@ Initializations
 script_directory = os.path.dirname(os.path.abspath(sys.argv[0])) 
 print(script_directory)
 
-pname=str(str(subprocess.check_output("pwd",shell=True).decode('utf-8')).split('/')[-1].strip())
-#pname = str(pname.split('\\')[0].strip())
+pname=str(str(subprocess.check_output("pwd",shell=True)).split(b'/')[-1].strip())
+print("start print")
+subprocess.check_output("cd",shell=True)
 print (pname)
 location=""
 maxlimit={'tcas':96.67,'totinfo':97.04,'printtokens':95.34,'printtokens2':99.50,'replace':95.02,'schedule':98.67,'schedule2':99.23}
@@ -70,7 +71,7 @@ returns:	Random prioritizated testsets for statement, branch and both coverage.
 input:		testset, program name and location of program, max coverage
 '''
 print ("################################\nEntered Random prioritization\n################################\n")
-Ran_S,Ran_B,Ran_SB=rand_pri.pri(testset,pname,location,maxlimit)
+Ran_S,Ran_B,Ran_SB=rand_pri.pri(testset.values(),pname,location,maxlimit)
 
 '''
 Total coverage prioritization
@@ -110,80 +111,41 @@ subprocess.call("rm -r results",shell=True)
 
 subprocess.call("mkdir results",shell=True)
 
+test=open("results/sran","w")
+pickle.dump(Ran_S, test)
+test.close()
 
-# Open the file in binary mode
-with open('results/sran', 'wb') as test_file:
-    pickle.dump(Ran_S, test_file)
-    test_file.close()
-    
-    
+test=open("results/bran","w")
+pickle.dump(Ran_B, test)
+test.close()
 
-# test=open("results/sran","w")
-# pickle.dump(Ran_S, test)
-# test.close()
+test=open("results/sbran","w")
+pickle.dump(Ran_SB, test)
+test.close()
 
-with open('results/bran', 'wb') as test_file:
-    pickle.dump(Ran_B, test_file)
-    test_file.close()
-    
-# test=open("results/bran","w")
-# pickle.dump(Ran_B, test)
-# test.close()
+test=open("results/stot","w")
+pickle.dump(Tot_S, test)
+test.close()
 
-with open('results/sbran', 'wb') as test_file:
-    pickle.dump(Ran_SB, test_file)
-    test_file.close()
-    
-# test=open("results/sbran","w")
-# pickle.dump(Ran_SB, test)
-# test.close()
+test=open("results/btot","w")
+pickle.dump(Tot_B, test)
+test.close()
 
-with open('results/stot', 'wb') as test_file:
-    pickle.dump(Tot_S, test_file)
-    test_file.close()
-    
-# test=open("results/stot","w")
-# pickle.dump(Tot_S, test)
-# test.close()
+test=open("results/sbtot","w")
+pickle.dump(Tot_SB, test)
+test.close()
 
-with open('results/btot', 'wb') as test_file:
-    pickle.dump(Tot_B, test_file)
-    test_file.close()
-    
-# test=open("results/btot","w")
-# pickle.dump(Tot_B, test)
-# test.close()
+test=open("results/sadd","w")
+pickle.dump(Add_S, test)
+test.close()
 
-with open('results/sbtot', 'wb') as test_file:
-    pickle.dump(Tot_SB, test_file)
-    test_file.close()
-    
-# test=open("results/sbtot","w")
-# pickle.dump(Tot_SB, test)
-# test.close()
+test=open("results/badd","w")
+pickle.dump(Add_B, test)
+test.close()
 
-with open('results/sadd', 'wb') as test_file:
-    pickle.dump(Add_S, test_file)
-    test_file.close()
-    
-# test=open("results/sadd","w")
-# pickle.dump(Add_S, test)
-# test.close()
-
-with open('results/badd', 'wb') as test_file:
-    pickle.dump(Add_B, test_file)
-    test_file.close()
-# test=open("results/badd","w")
-# pickle.dump(Add_B, test)
-# test.close()
-
-with open('results/sbadd', 'wb') as test_file:
-    pickle.dump(Add_SB, test_file)
-    test_file.close()
-
-# test=open("results/sbadd","w")
-# pickle.dump(Add_SB, test)
-# test.close()
+test=open("results/sbadd","w")
+pickle.dump(Add_SB, test)
+test.close()
 
 print ("Task Complete.Thank you.")
 
