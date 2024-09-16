@@ -1,8 +1,7 @@
 '''  
-=================================================================
-	@version  2.0
-	@author   Ashwin Ramadevanahalli
-	@title    Testing.
+================================================================
+	@author   Chinonso Okereke
+	@title    Test Case Prioritization 
 
 
 	Main module.
@@ -13,12 +12,10 @@ import os
 import sys
 import subprocess
 import testset_parse
-import gcov_parse
 import rand_pri
-import cso_tcp
-import tot_pri
-import add_pri
-import pickle
+import cuckoo_search_tcp
+import ga_test_tcp_read
+import pickle as pick
 
 
 '''
@@ -27,11 +24,11 @@ Initializations
 pname=str(str(subprocess.check_output("pwd",shell=True).decode('utf-8')).split('/')[-1].strip())
 
 location=""
-maxlimit={'tcas':96.67,'totinfo':97.04,'printtokens':95.34,'printtokens2':99.50,'replace':95.02,'schedule':98.67,'schedule2':99.23}
-#location="/Users/Ashwin/Downloads/benchmarks/"+pname+"/"
 
 
-if len(sys.argv) < 3:
+test_var = 0
+
+if test_var < 1:
 
     '''
     Cleaning
@@ -42,155 +39,102 @@ if len(sys.argv) < 3:
     '''
     Testset parse module 
     returns: 	A dictionary with Key in range '1 to No_of_tests' and value as the testcases and total number of statements in program.
+    returns:	state_testset=list of <No of statements it covers,testcase> and Brances_testset=list of <No of brances it covers,testcase> and both.
     input: 		program name, location of program.
     '''
     print ("################################\nEntered Testset parse module\n################################\n")
     testset,tot_statements,No_of_tests=testset_parse.parse(pname,location)
     print (testset)
 
-
     print (tot_statements)
 
-    '''
-    Gcov parse module 
-    returns:	state_testset=list of <No of statements it covers,testcase> and Brances_testset=list of <No of brances it covers,testcase> and both.
-    input:		testset and total number of statements
-    '''
-    print ("################################\nEntered Gcov parse module\n################################\n")
-    state_testset,branch_testset,sb_testset=gcov_parse.parse(testset,tot_statements)
-    print (state_testset)
+    test_load = [testset, tot_statements, No_of_tests]
+    with open('load_test.pkl', 'wb') as outp1:
+            pick.dump(test_load, outp1, pick.HIGHEST_PROTOCOL)
+
 else:
-    foo = 0
+    with open('load_test.pkl', 'rb') as inp1:
+                setup = pick.load(inp1)
+                testset = setup[0]
+                tot_statements = setup[1]
+                No_of_tests = setup[2]
     pass
-
-
-
-print ("################################\nEntered CSO prioritization\n################################\n")
-best_test, best_fit =cso_tcp.CS(testset,pname,location)
-
 
 '''
 Random prioritization
 returns:	Random prioritizated testsets for statement, branch and both coverage.
-input:		testset, program name and location of program, max coverage
+input:		testset
 
 '''
+#No of Priority cases should be considered
+no_tcp = 5 #CHange value to suit your needs
 print ("################################\nEntered Random prioritization\n################################\n")
-Ran_S,Ran_B,Ran_SB=rand_pri.pri(testset,pname,location,maxlimit)
+shuffled_test, best_test_rand=rand_pri.pri(testset,no_tcp)
+print(best_test_rand)
+input("Random")
+print(shuffled_test)
+print("Reading Test cases file")
+file_path = "output_file.txt"
+test_cases = {}
+with open(file_path, 'r') as file:
+    for line in file:
+        parts = line.strip().split(':')
+        if len(parts) == 2:
+            test_id = parts[0]
+            test_data = eval(parts[1])
+            if len(test_data) >= 2:
+                percentage_coverage = float(test_data[1])
+                test_cases[test_id] = {'id': test_id, 'percentage_coverage': percentage_coverage}
 
-'''
-Total coverage prioritization
-returns:	Total coverage prioritizated testsets for statement, branch and both coverage.
-input:		testsets with coverage information, program name and location of program, max coverage
-'''
-Tot_S,Tot_B,Tot_SB=tot_pri.pri(state_testset,branch_testset,sb_testset,pname,location,maxlimit)
+print ("################################\nEntered CSO prioritization\n################################\n")
+#No of Priority cases should be considered
+population_size = 50 # number of nests
+
+generations = 100 #generations or iterations
+best_test_cso =cuckoo_search_tcp.cuckoo_search(test_cases, population_size, no_tcp, generations)
 
 
-'''
-Additional coverage prioritization
-returns:	Additional coverage prioritizated testsets for statement, branch and both coverage.
-input:		testsets with coverage information, program name and location of program, max coverage
-'''
+print(best_test_cso)
 
-Add_S,Add_B,Add_SB=add_pri.pri(state_testset,branch_testset,sb_testset,pname,location,maxlimit)
+print ("################################\nEntered GA prioritization\n################################\n")
+#No of Priority cases should be considered
+mutation_rate = 0.2
+
+best_test_ga = ga_test_tcp_read.genetic_algorithm(test_cases, population_size, generations, mutation_rate,no_tcp)
+print("Top 5 prioritized test cases for GA:")
+for test in best_test_ga:
+    print(f"Test {test}: Content = {test[0]} Coverage = {test[1]}")
+
 
 print ("################################\nResult Section\n################################\n")
-
-print (len(Ran_S))
-print (len(Ran_B))
-print (len(Ran_SB))
-print (len(Tot_S))
-print (len(Tot_B))
-print (len(Tot_SB))
-print (len(Add_S))
-print (len(Add_B))
-print (len(Add_SB))
 
 
 
 print ("Total number of test cases=",No_of_tests)
 
+'''Restoring environment'''
+subprocess.call("rm tempfile",shell=True)
+subprocess.call("cp selected tempfile",shell=True)
+subprocess.call("cp selected "+pname+".gcda",shell=True)
 
 '''Storing Results'''
+
 subprocess.call("rm -r results",shell=True)
 
 subprocess.call("mkdir results",shell=True)
 
-
-# Open the file in binary mode
-with open('results/sran', 'wb') as test_file:
-    pickle.dump(Ran_S, test_file)
+with open('results/cso', 'wb') as test_file:
+    pick.dump(best_test_cso, test_file)
     test_file.close()
+with open('results/ga', 'wb') as test_file:
+    pick.dump(best_test_ga, test_file)
+    test_file.close()
+with open('results/rand', 'wb') as test_file:
+    pick.dump(best_test_rand, test_file)
+    test_file.close()
+with open('alltestcases', 'wb') as outp1:
+	pick.dump(testset, outp1, pick.HIGHEST_PROTOCOL)
     
-    
-
-# test=open("results/sran","w")
-# pickle.dump(Ran_S, test)
-# test.close()
-
-with open('results/bran', 'wb') as test_file:
-    pickle.dump(Ran_B, test_file)
-    test_file.close()
-    
-# test=open("results/bran","w")
-# pickle.dump(Ran_B, test)
-# test.close()
-
-with open('results/sbran', 'wb') as test_file:
-    pickle.dump(Ran_SB, test_file)
-    test_file.close()
-    
-# test=open("results/sbran","w")
-# pickle.dump(Ran_SB, test)
-# test.close()
-
-with open('results/stot', 'wb') as test_file:
-    pickle.dump(Tot_S, test_file)
-    test_file.close()
-    
-# test=open("results/stot","w")
-# pickle.dump(Tot_S, test)
-# test.close()
-
-with open('results/btot', 'wb') as test_file:
-    pickle.dump(Tot_B, test_file)
-    test_file.close()
-    
-# test=open("results/btot","w")
-# pickle.dump(Tot_B, test)
-# test.close()
-
-with open('results/sbtot', 'wb') as test_file:
-    pickle.dump(Tot_SB, test_file)
-    test_file.close()
-    
-# test=open("results/sbtot","w")
-# pickle.dump(Tot_SB, test)
-# test.close()
-
-with open('results/sadd', 'wb') as test_file:
-    pickle.dump(Add_S, test_file)
-    test_file.close()
-    
-# test=open("results/sadd","w")
-# pickle.dump(Add_S, test)
-# test.close()
-
-with open('results/badd', 'wb') as test_file:
-    pickle.dump(Add_B, test_file)
-    test_file.close()
-# test=open("results/badd","w")
-# pickle.dump(Add_B, test)
-# test.close()
-
-with open('results/sbadd', 'wb') as test_file:
-    pickle.dump(Add_SB, test_file)
-    test_file.close()
-
-# test=open("results/sbadd","w")
-# pickle.dump(Add_SB, test)
-# test.close()
-
 print ("Task Complete.Thank you.")
 
 

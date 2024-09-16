@@ -64,11 +64,11 @@ def cuckoo_search(test_cases, n_nests, n_eggs, n_iterations, pa=0.25):
     nests = [random.sample(test_ids, n_eggs) for _ in range(n_nests)]
     # print(nests)
     fitness = [objective_function(nest, test_cases) for nest in nests]
-    print(fitness)
+    # print(fitness)
     
     best_nest = max(nests, key=lambda nest: objective_function([nest], test_cases))
     best_fitness = max(fitness)
-    print(best_nest, best_fitness)
+    # print(best_nest, best_fitness)
     
     for _ in range(n_iterations):
         # Generate a new cuckoo egg
@@ -99,7 +99,7 @@ def cuckoo_search(test_cases, n_nests, n_eggs, n_iterations, pa=0.25):
             fitness[i] = objective_function(nests[i], test_cases)
         #     # Update the best solution if needed
         if fitness[i] > best_fitness:
-            best_nest = nests[i]
+            best_nest = nests[i]nests
             best_fitness = fitness[i]
 
 
@@ -109,30 +109,28 @@ def cuckoo_search(test_cases, n_nests, n_eggs, n_iterations, pa=0.25):
         for i in worst_nests:
             nests[i] = random.sample(test_ids, n_eggs)
             fitness[i] = objective_function([nests[i]], test_cases)
-        print(best_nest,best_fitness)
-        print(nests[i],fitness[i])
     
-    return best_nest, best_fitness
+    return best_nest
 
 # Main execution
-if __name__ == "__main__":
-    file_path = "output_file.txt"  # Update this to the actual file path
-    test_cases = read_test_cases(file_path)
+# if __name__ == "__main__":
+#     file_path = "output_file.txt"  # Update this to the actual file path
+#     test_cases = read_test_cases(file_path)
 
-    n_nests = 25
-    n_eggs = 5
-    n_iterations = 10
-    best_solution, best_fitness = cuckoo_search(test_cases, n_nests, n_eggs, n_iterations)
+#     n_nests = 25
+#     n_eggs = 5
+#     n_iterations = 10
+#     best_solution, best_fitness = cuckoo_search(test_cases, n_nests, n_eggs, n_iterations)
 
-    print(f"Total number of test cases: {len(test_cases)}")
-    print(f"\nBest Nest ({n_eggs} eggs):")
-    for egg_index, test_id in enumerate(best_solution, 1):
-        test = test_cases[test_id]
-        print(f"{egg_index}. {test['id']} - Percentage Coverage: {test['percentage_coverage']:.2f}%")
+    # print(f"Total number of test cases: {len(test_cases)}")
+    # print(f"\nBest Nest ({n_eggs} eggs):")
+    # for egg_index, test_id in enumerate(best_solution, 1):
+    #     test = test_cases[test_id]
+    #     print(f"{egg_index}. {test['id']} - Percentage Coverage: {test['percentage_coverage']:.2f}%")
 
-    print(f"\nBest Fitness Score (Average Coverage): {best_fitness:.2f}%")
+    # print(f"\nBest Fitness Score (Average Coverage): {best_fitness:.2f}%")
 
-    # Add this to check individual test coverages
-    print("\nIndividual test coverages in best solution:")
-    for test_id in best_solution:
-        print(f"{test_id}: {test_cases[test_id]['percentage_coverage']:.2f}%")
+    # # Add this to check individual test coverages
+    # print("\nIndividual test coverages in best solution:")
+    # for test_id in best_solution:
+    #     print(f"{test_id}: {test_cases[test_id]['percentage_coverage']:.2f}%")
