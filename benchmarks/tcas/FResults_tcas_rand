@@ -1,0 +1,44 @@
+0 Fault analysis of tcas
+0 Total number of faults: 41
+4: 5 in rand reveals fault	 in v1
+rand does not reveal fault in v2
+rand does not reveal fault in v3
+rand does not reveal fault in v4
+rand does not reveal fault in v5
+rand does not reveal fault in v6
+5: 389 in rand reveals fault	 in v7
+rand does not reveal fault in v8
+rand does not reveal fault in v9
+rand does not reveal fault in v10
+rand does not reveal fault in v11
+rand does not reveal fault in v12
+rand does not reveal fault in v13
+rand does not reveal fault in v14
+rand does not reveal fault in v15
+rand does not reveal fault in v16
+5: 389 in rand reveals fault	 in v17
+4: 5 in rand reveals fault	 in v18
+rand does not reveal fault in v19
+rand does not reveal fault in v20
+rand does not reveal fault in v21
+rand does not reveal fault in v22
+rand does not reveal fault in v23
+rand does not reveal fault in v24
+rand does not reveal fault in v25
+rand does not reveal fault in v26
+rand does not reveal fault in v27
+rand does not reveal fault in v28
+rand does not reveal fault in v29
+rand does not reveal fault in v30
+rand does not reveal fault in v31
+rand does not reveal fault in v32
+0: 882 in rand reveals fault	 in v33
+rand does not reveal fault in v34
+rand does not reveal fault in v35
+rand does not reveal fault in v36
+rand does not reveal fault in v37
+rand does not reveal fault in v38
+rand does not reveal fault in v39
+rand does not reveal fault in v40
+rand does not reveal fault in v41
+APFD is 0.9898373983739838

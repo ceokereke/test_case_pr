@@ -67,9 +67,7 @@ function ALIM called 0 returned 0% blocks executed 0%
 function Inhibit_Biased_Climb called 0 returned 0% blocks executed 0%
     #####:   61:int Inhibit_Biased_Climb ()
         -:   62:{
-    #####:   63:    return (Climb_Inhibit ? Up_Separation + NOZCROSS : Up_Separation);
-branch  0 never executed
-branch  1 never executed
+    #####:   63:    return (Climb_Inhibit ? Up_Separation : Up_Separation);
         -:   64:}
         -:   65:
 function Non_Crossing_Biased_Climb called 0 returned 0% blocks executed 0%

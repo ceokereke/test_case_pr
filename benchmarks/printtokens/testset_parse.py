@@ -1,15 +1,16 @@
 '''  
 =================================================================
 	@version  2.0
-	@author   Ashwin Ramadevanahalli
+	@author   Chinonso Okereke
 	@title    Testing.
 
 
-	Testset parse module.
+	Preprocessing and initial testing and Gcov output file parse module.
 =================================================================
 '''
 import subprocess
 import sys
+import pickle
 
 def parse(pname,location):
 	
@@ -36,21 +37,27 @@ def parse(pname,location):
 	
 
 	'''Runnning each case and storing output'''
-
+	tot_statements = 0
 	for line in uni:
-		i=i+1
-		testset[i]=str(line.strip('\n'))
-		subprocess.call("./"+pname+" "+str(line),shell=True)
 
-		temp_out=subprocess.check_output("gcov -b -c "+pname,shell=True)
-		tot_statements=int(temp_out.split(b'\n')[1].split()[-1])
+		i=i+1
+		
+		subprocess.call("./"+pname+" "+str(line),shell=True)
+		# print(testset)
+
+		temp_out=subprocess.check_output("gcov -b -c "+pname,shell=True).decode('utf-8')
+		tot_statements=int(temp_out.split('\n')[1].split()[-1])
+		fit=float(temp_out.split('\n')[1].split(':')[-1].split()[0].strip('%'))
+		testset[i]=[str(line.strip('\n')),fit]
+
 		try:
-			check=subprocess.check_output("mv "+pname+".c.gcov"+" outputs/"+str(i),shell=True)
+			check=subprocess.check_output("mv "+pname+".c.gcov"+" outputs/"+str(i),shell=True).decode('utf-8')
 			subprocess.call(["rm",pname+".gcda"])
 		except Exception as e:
 			logging.error(traceback.format_exc())
 			print ("\n Abrupt exit")
 			sys.exit(0)
+		# input("Enter")
 
 
 
@@ -63,5 +70,36 @@ def parse(pname,location):
 	subprocess.call(["rm","-r",pname+".dsYM"])
 	subprocess.call(["rm",pname])
 	
+
+	for key in testset:
+		total = tot_statements
+		scount=0
+		bcount=0
+		Sout=open("outputs/"+str(key))
+		for line in Sout.readlines():
+			if line.split(':')[0]=="    #####":
+				scount+=1
+
+			ls=line.split()
+			if ls[0]=="branch" and ls[2]=="taken" and int(ls[3])>0:
+				bcount+=1
+
+		Sout.close()
+
+		testset[key].append(total-scount)
+
+		testset[key].append(bcount)
+
+		testset[key].append(bcount+total-scount)
+
+		testset[key].append(scount)
+
+	# print(testset)
+
+
+
+	with open('output_file.txt', 'w') as f:
+		for key, value in testset.items():
+			f.write(f"{key}:{value}\n")
 
 	return testset,tot_statements,i

@@ -1,7 +1,7 @@
 '''  
 =================================================================
 	@version  2.0
-	@author   Ashwin Ramadevanahalli
+	@author   Chinonso Okereke
 	@title    Testing.
 
 
@@ -15,39 +15,40 @@ import sys
 '''Intializations'''
 
 
-def pri(tests,pname,location,maxlim):
-	s_adeq_suite=[]
-	b_adeq_suite=[]
-	sb_adeq_suite=[]
-	sflag=True
-	bflag=True
-	random.shuffle(tests)
-	subprocess.call(["rm",pname+".gcno"])
-	subprocess.call(["rm","-r",pname+".dsYM"])
-	subprocess.call(["rm",pname])
-	subprocess.call(["rm",pname+".c.gcov"])
-	subprocess.call(["rm",pname+".gcda"])
-	subprocess.call("gcc -fprofile-arcs -ftest-coverage -g -o "+pname+" "+location+pname+".c",shell=True)
-	for test in tests:
+def pri(tests,no_tcp):
 
-		if sflag==True:
-			s_adeq_suite.append(test)
-		if bflag==True:
-			b_adeq_suite.append(test)
-		sb_adeq_suite.append(test)
+	#random.shuffle(tests) python2 code
 
-		subprocess.call("./"+pname+" "+test,shell=True)
-		temp_out=subprocess.check_output("gcov -b -c "+pname,shell=True)
-		if  float(maxlim[pname])==float(temp_out.split(b'\n')[1].split(b':')[-1].split()[0].strip(b'%')):
-			sflag=False
+	#python3 code
+	# Convert the dictionary values to a list
+	items = list(tests.items())
+	list_of_lists = [list(item) for item in items]
+	# print(items)
+	# print(list_of_lists)
 
-		if 100==float(temp_out.split(b'\n')[2].split(b':')[-1].split()[0].strip(b'%')):
-			bflag=False
+	# Shuffle the list of values
+	random.shuffle(items)
 
-		if not(sflag) and not(bflag):
-			return s_adeq_suite,b_adeq_suite,sb_adeq_suite
+	# If you need to maintain the keys and shuffle the values, you can create a new dictionary
+	priority_tests = items[:no_tcp]
+	# print(priority_tests)
+	list_of_prio = [list(item) for item in priority_tests]
+	# print(list_of_prio)
+	pr_shuffle = dict(priority_tests)
+	shuffled_tests = dict(items)
+	# shuffled_tests = dict(zip(tests.keys(), values))
 
-	sys.exit("Adequate test not found(random)")
+	with open('output_file1.txt', 'w') as f:
+		for key, value in shuffled_tests.items():
+			f.write(f"{key}:{value}\n")
+
+	with open('output_file2.txt', 'w') as f:
+		for key, value in pr_shuffle.items():
+			f.write(f"{key}:{value}\n")
+	rand_ids = list(pr_shuffle.keys())
+
+	return shuffled_tests, rand_ids
+
 
 
 

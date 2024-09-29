@@ -46,11 +46,12 @@ print("####################")
 with open('alltestcases', 'rb') as inp1:
     alltestcases = pickle.load(inp1)
 print(alltestcases)
+# input("all")
 
 for suite in [meganame]:
 	infile=open("results/"+suite,"rb")
 	testcases=pickle.load(infile)
-	print(testcases)
+	# print(testcases)
 	print("####################")
 	print("After Pickle")
 	print("####################")
@@ -65,28 +66,34 @@ for suite in [meganame]:
 	print("####################")
 
 	for test in testcases:
-		print(test)
-		test = alltestcases.get(int(test))[0]
+		# print(test)
+		
+		test_content = alltestcases.get(int(test))[0]
+		# print(test)
+		# input("test")
 		try:
 
-			temp=subprocess.run("timeout 1 ./"+pname+" "+test,shell=True,stdout=subprocess.PIPE,universal_newlines=True)
-			print(temp)
+			temp=subprocess.run("timeout 1 ./"+pname+" "+test_content,shell=True,stdout=subprocess.PIPE,universal_newlines=True)
+			# print(temp)
 			pout=str(temp.stdout)
-			print(pout)
+			# print(pout)
 			
-			# pout=str(subprocess.check_output(["./"+pname,test],timeout=5))
+			# pout=str(subprocess.check_output(["./"+pname,test_content],timeout=5))
 		except subprocess.CalledProcessError as e:
 			print("Exception occured XXXXXXXXXXXXX",str(e))
 			real_outputs.append(str(e))
+			input('XXXXXXXXXXXXXXXXX')
 			out.write(str(e))
 		except subprocess.TimeoutExpired as e:
 			print("Exception occured XXXXXXXXXXXXX",str(e))
 			real_outputs.append(str(e))
+			input('XXXXXXXXXXXXXXXXX')
 			out.write(str(e))
 		except Exception as e:
 			print ("Doesnt Run.......")
 			print (str(e))
 			real_outputs.append(str(e))
+			input('XXXXXXXXXXXXXXXXX')
 			out.write(str(e))
 
 		else:
@@ -110,12 +117,11 @@ for suite in [meganame]:
 		c=0
 		fflag=False
 
-		
-		for test in testcases:
-			print(test)
-			test = alltestcases.get(int(test))[0]
+		for j,test in enumerate(testcases):
+			# print(test)
+			test_content = alltestcases.get(int(test))[0]
 			try:
-				temp=subprocess.run("timeout 1 ./"+pname+" "+test,shell=True,stdout=subprocess.PIPE, universal_newlines=True)
+				temp=subprocess.run("timeout 1 ./"+pname+" "+test_content,shell=True,stdout=subprocess.PIPE, universal_newlines=True)
 				temp_out=str(temp.stdout)
 			except subprocess.CalledProcessError as e:
 				print("Exception occured XXXXXXXXXXXXX",str(e))
@@ -130,7 +136,7 @@ for suite in [meganame]:
 				# out.write(str(e))
 			print("####\nfisrt one:",real_outputs[c],"\nSecond one:",temp_out,"\n####")
 			if not(real_outputs[c]==temp_out):
-				res.write("1 "+suite+" reveals fault in v"+str(i)+"\n")
+				res.write(str(j)+": "+str(test)+" in "+suite+" reveals fault	 in v"+str(i)+"\n")
 				fflag=True
 				print("####\nfisrt one:",real_outputs[c],"\nSecond one:",temp_out,"\n####")
 				print("####################")
@@ -141,7 +147,7 @@ for suite in [meganame]:
 			c+=1
 		
 		if fflag==False:
-				res.write("0 "+suite+" does not reveal fault in v"+str(i)+"\n")
+				res.write(suite +" does not reveal fault in v"+str(i)+"\n")
 				print("####################")
 				print(i,"\t",suite,"\Fail")
 				print("####################")

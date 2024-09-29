@@ -64,12 +64,10 @@ function ALIM called 2 returned 100% blocks executed 100%
         2:   58: return Positive_RA_Alt_Thresh[Alt_Layer_Value];
         -:   59:}
         -:   60:
-function Inhibit_Biased_Climb called 2 returned 100% blocks executed 80%
+function Inhibit_Biased_Climb called 2 returned 100% blocks executed 100%
         2:   61:int Inhibit_Biased_Climb ()
         -:   62:{
-       2*:   63:    return (Climb_Inhibit ? Up_Separation + NOZCROSS : Up_Separation);
-branch  0 taken 2 (fallthrough)
-branch  1 taken 0
+        2:   63:    return (Climb_Inhibit ? Up_Separation : Up_Separation);
         -:   64:}
         -:   65:
 function Non_Crossing_Biased_Climb called 1 returned 100% blocks executed 52%

@@ -15,10 +15,10 @@ import subprocess
 
 
 
-tlist=["cso","ga"]
+tlist=["ga_cso","ga_4","cso_4","rand"]
 
 for prior in tlist:
-		subprocess.call("python3 fault_analysis.py "+prior,shell=True)
+		subprocess.call("python3 fault_analysis_extra.py "+prior,shell=True)
 
 
 

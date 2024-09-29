@@ -1,0 +1,9 @@
+0 Fault analysis of printtokens
+0 Total number of faults: 7
+1 ga_cso reveals fault in v1
+1 ga_cso reveals fault in v2
+1 ga_cso reveals fault in v3
+0 ga_cso does not reveal fault in v4
+1 ga_cso reveals fault in v5
+1 ga_cso reveals fault in v6
+0 ga_cso does not reveal fault in v7
