@@ -1,0 +1,44 @@
+0 Fault analysis of tcas
+0 Total number of faults: 41
+0: 1 in all_tests reveals fault	 in v1
+145: 146 in all_tests reveals fault	 in v2
+18: 19 in all_tests reveals fault	 in v3
+4: 5 in all_tests reveals fault	 in v4
+all_tests does not reveal fault in v5
+150: 151 in all_tests reveals fault	 in v6
+150: 151 in all_tests reveals fault	 in v7
+150: 151 in all_tests reveals fault	 in v8
+24: 25 in all_tests reveals fault	 in v9
+150: 151 in all_tests reveals fault	 in v10
+150: 151 in all_tests reveals fault	 in v11
+6: 7 in all_tests reveals fault	 in v12
+64: 65 in all_tests reveals fault	 in v13
+150: 151 in all_tests reveals fault	 in v14
+all_tests does not reveal fault in v15
+0: 1 in all_tests reveals fault	 in v16
+150: 151 in all_tests reveals fault	 in v17
+9: 10 in all_tests reveals fault	 in v18
+150: 151 in all_tests reveals fault	 in v19
+150: 151 in all_tests reveals fault	 in v20
+150: 151 in all_tests reveals fault	 in v21
+145: 146 in all_tests reveals fault	 in v22
+24: 25 in all_tests reveals fault	 in v23
+150: 151 in all_tests reveals fault	 in v24
+150: 151 in all_tests reveals fault	 in v25
+64: 65 in all_tests reveals fault	 in v26
+all_tests does not reveal fault in v27
+24: 25 in all_tests reveals fault	 in v28
+145: 146 in all_tests reveals fault	 in v29
+24: 25 in all_tests reveals fault	 in v30
+150: 151 in all_tests reveals fault	 in v31
+150: 151 in all_tests reveals fault	 in v32
+18: 19 in all_tests reveals fault	 in v33
+6: 7 in all_tests reveals fault	 in v34
+24: 25 in all_tests reveals fault	 in v35
+9: 10 in all_tests reveals fault	 in v36
+18: 19 in all_tests reveals fault	 in v37
+92: 93 in all_tests reveals fault	 in v38
+150: 151 in all_tests reveals fault	 in v39
+9: 10 in all_tests reveals fault	 in v40
+4: 5 in all_tests reveals fault	 in v41
+APFD is 0.9523191966994297

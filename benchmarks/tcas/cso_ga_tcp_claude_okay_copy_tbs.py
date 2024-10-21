@@ -18,6 +18,10 @@ def read_test_cases(file_path):
 def objective_function(nest, test_cases):
     return sum(test_cases[test_id]['total_branch'] for test_id in nest) / len(nest)
 
+def initialize_population(test_cases, population_size):
+    test_ids = list(test_cases.keys())
+    return [random.sample(test_ids, len(test_ids)) for _ in range(population_size)]
+
 def levy_flight(n):
     beta = 3 / 2
     sigma = (math.gamma(1 + beta) * math.sin(math.pi * beta / 2) / 
@@ -51,16 +55,19 @@ def crossover(parent1, parent2):
 
 def mutation(solution, test_ids, mutation_rate):
     if random.random() < mutation_rate:
-        index = random.randint(0, len(solution) - 1)
-        new_test_id = random.choice([t for t in test_ids if t not in solution])
-        solution[index] = new_test_id
+        # index = random.randint(0, len(solution) - 1)
+        # new_test_id = random.choice([t for t in test_ids if t not in solution])
+        # solution[index] = new_test_id
+        idx1, idx2 = random.sample(range(len(solution)), 2)
+        solution[idx1], solution[idx2] = solution[idx2], solution[idx1]
     return solution
 
-def hybrid_ga_search_ga(test_cases, n_nests, n_eggs, n_iterations, mutation_rate, pa=0.25,crossover_rate=0.6 ):
+def hybrid_ga_search_ga(test_cases, n_nests, n_iterations, mutation_rate, pa=0.25,crossover_rate=0.6 ):
+    nests = initialize_population(test_cases, n_nests)
     test_ids = list(test_cases.keys())
 
-    # Initialize nests
-    nests = [random.sample(test_ids, n_eggs) for _ in range(n_nests)]
+    # # Initialize nests
+    # nests = [random.sample(test_ids, n_eggs) for _ in range(n_nests)]
     fitness = [objective_function(nest, test_cases) for nest in nests]
     
     best_nest = max(nests, key=lambda nest: objective_function(nest, test_cases))
@@ -73,8 +80,11 @@ def hybrid_ga_search_ga(test_cases, n_nests, n_eggs, n_iterations, mutation_rate
         # Generate a new cuckoo egg
         for i in range(n_nests):
         # i = random.randint(0, n_nests - 1)
-            j = random.randint(0, n_eggs - 1)
+            j = random.randint(0, len(nests[i]) - 1)
+            print(i,j,len(nests[i]))
+            print(nests[i][j])
             new_egg = generate_new_egg(nests[i][j], test_ids)
+            
             # new_egg = generate_new_egg(nests[i], test_ids)
             
             # Choose a random nest
@@ -107,7 +117,7 @@ def hybrid_ga_search_ga(test_cases, n_nests, n_eggs, n_iterations, mutation_rate
         # print(int(pa * n_nests),n_nests,pa)
         # print(worst_nests)
         for i in worst_nests:
-            nests[i] = random.sample(test_ids, n_eggs)
+            nests[i] = random.sample(test_ids, len(test_cases))
             fitness[i] = objective_function(nests[i], test_cases)
 
         

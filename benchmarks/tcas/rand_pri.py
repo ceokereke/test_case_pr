@@ -15,7 +15,7 @@ import sys
 '''Intializations'''
 
 
-def pri(tests,no_tcp):
+def pri(tests):
 
 	#random.shuffle(tests) python2 code
 
@@ -30,10 +30,8 @@ def pri(tests,no_tcp):
 	random.shuffle(items)
 
 	# If you need to maintain the keys and shuffle the values, you can create a new dictionary
-	priority_tests = items[:no_tcp]
+	priority_tests = items
 	# print(priority_tests)
-	list_of_prio = [list(item) for item in priority_tests]
-	# print(list_of_prio)
 	pr_shuffle = dict(priority_tests)
 	shuffled_tests = dict(items)
 	# shuffled_tests = dict(zip(tests.keys(), values))

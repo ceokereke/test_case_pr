@@ -66,13 +66,13 @@ input:		testset
 
 '''
 #No of Priority cases should be considered
-no_tcp = 6 #CHange value to suit your needs
+no_tcp = No_of_tests #CHange value to suit your needs
 print ("################################\nEntered Random prioritization\n################################\n")
 shuffled_test, best_test_rand=rand_pri.pri(testset,no_tcp)
 print(best_test_rand)
 # print(shuffled_test)
 print("Reading Test cases file")
-file_path = "output_file.txt"
+file_path = "output_file_or.txt"
 test_cases = {}
 with open(file_path, 'r') as file:
     for line in file:

@@ -91,10 +91,10 @@ def parse(pname,location):
 		testset[key].append(bcount)
 
 		testset[key].append(bcount+total-scount)
-
+		
 		testset[key].append(scount)
 
-	# print(testset)
+	print(testset)
 
 
 

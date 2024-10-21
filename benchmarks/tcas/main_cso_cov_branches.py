@@ -9,7 +9,7 @@
 '''
 
 import subprocess
-import testset_parse
+import testset_parse_copy
 import rand_pri
 import cuckoo_search_tcp_tbs
 import ga_test_tcp_read_tbs
@@ -42,7 +42,7 @@ if test_var < 1:
     input: 		program name, location of program.
     '''
     print ("################################\nEntered Testset parse module\n################################\n")
-    testset,tot_statements,No_of_tests=testset_parse.parse(pname,location)
+    testset,tot_statements,No_of_tests=testset_parse_copy.parse(pname,location)
     print (testset)
 
     print (tot_statements)
@@ -66,13 +66,13 @@ input:		testset
 
 '''
 #No of Priority cases should be considered
-no_tcp = 6 #CHange value to suit your needs
+no_tcp = No_of_tests # len(test_cases)  #CHange value to suit your needs
 print ("################################\nEntered Random prioritization\n################################\n")
-shuffled_test, best_test_rand=rand_pri.pri(testset,no_tcp)
-print(best_test_rand)
+shuffled_test, best_test_rand=rand_pri.pri(testset)
+# print(best_test_rand)
 # print(shuffled_test)
 print("Reading Test cases file")
-file_path = "output_file.txt"
+file_path = "output_file_or.txt"
 test_cases = {}
 with open(file_path, 'r') as file:
     for line in file:
@@ -92,38 +92,38 @@ print ("################################\nEntered CSO prioritization\n##########
 population_size = 100 # number of nests
 
 generations = 300 #generations or iterations
-best_test_cso,best_test_cso_fitness =cuckoo_search_tcp_tbs.cuckoo_search(test_cases, population_size, no_tcp, generations)
+best_test_cso =cuckoo_search_tcp_tbs.cuckoo_search(test_cases, population_size,generations)
 
 
-print(best_test_cso)
-for index, test_id in enumerate(best_test_cso, 1):
-    test = test_cases[test_id]
-    # print(f"{index}. {test['id']} - Percentage Coverage: {test['percentage_coverage']:.2f}%")
-    print(f"{index}. {test['id']} - Total Branches and Statements: {test['total_branch']:.2f}")
-print(f" Fitness is: {best_test_cso_fitness}")
+# print(best_test_cso)
+# for index, test_id in enumerate(best_test_cso, 1):
+#     test = test_cases[test_id]
+#     # print(f"{index}. {test['id']} - Percentage Coverage: {test['percentage_coverage']:.2f}%")
+#     print(f"{index}. {test['id']} - Total Branches and Statements: {test['total_branch']:.2f}")
+# print(f" Fitness is: {best_test_cso_fitness}")
 print ("################################\nEntered GA prioritization\n################################\n")
 #No of Priority cases should be considered
 mutation_rate = 0.2
 
-best_test_ga, best_test_ga_fitness = ga_test_tcp_read_tbs.genetic_algorithm(test_cases, population_size, generations, mutation_rate,no_tcp)
-print(best_test_ga)
-for index, test_id in enumerate(best_test_ga, 1):
-    test = test_cases[test_id]
-    print(f"{index}. {test['id']} - Total Branches and Statements: {test['total_branch']:.2f}")
-    # print(f"{index}. {test['id']} - Percentage Coverage: {test['percentage_coverage']:.2f}%")
-print(f" Fitness is: {best_test_ga_fitness}")
+best_test_ga = ga_test_tcp_read_tbs.genetic_algorithm(test_cases, population_size, generations, mutation_rate)
+# print(best_test_ga)
+# for index, test_id in enumerate(best_test_ga, 1):
+#     test = test_cases[test_id]
+#     print(f"{index}. {test['id']} - Total Branches and Statements: {test['total_branch']:.2f}")
+#     # print(f"{index}. {test['id']} - Percentage Coverage: {test['percentage_coverage']:.2f}%")
+# print(f" Fitness is: {best_test_ga_fitness}")
 
 print ("################################\nEntered CSO+GA prioritization\n################################\n")
 
 # best_test_cso_ga, all_tests = cso_ga_tcp_claude.hybrid_ga_search_ga(test_cases, population_size,no_tcp, generations, mutation_rate)
 
-best_test_cso_ga, all_tests,best_test_cso_ga_fitness = cso_ga_tcp_claude_okay_copy_tbs.hybrid_ga_search_ga(test_cases, population_size,no_tcp, generations, mutation_rate)
-print(best_test_cso_ga)
-for index, test_id in enumerate(best_test_cso_ga, 1):
-    test = test_cases[test_id]
-    print(f"{index}. {test['id']} - Total Branches and Statements: {test['total_branch']:.2f}")
-    # print(f"{index}. {test['id']} - Percentage Coverage: {test['percentage_coverage']:.2f}%")
-print(f" Fitness is: {best_test_cso_ga_fitness}")
+best_test_cso_ga, all_tests,best_test_cso_ga_fitness = cso_ga_tcp_claude_okay_copy_tbs.hybrid_ga_search_ga(test_cases, population_size, generations, mutation_rate)
+# print(best_test_cso_ga)
+# for index, test_id in enumerate(best_test_cso_ga, 1):
+#     test = test_cases[test_id]
+#     print(f"{index}. {test['id']} - Total Branches and Statements: {test['total_branch']:.2f}")
+#     # print(f"{index}. {test['id']} - Percentage Coverage: {test['percentage_coverage']:.2f}%")
+# print(f" Fitness is: {best_test_cso_ga_fitness}")
 
 print ("################################\nResult Section\n################################\n")
 
