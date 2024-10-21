@@ -39,35 +39,36 @@ def cuckoo_search(test_cases, n_nests, n_iterations, pa=0.25):
     
     for _ in range(n_iterations):
         # Generate a new cuckoo egg
-        i = random.randint(0, n_nests - 1)
-        j = random.randint(0, len(test_ids) - 1)
-        new_egg = generate_new_egg(nests[i][j], test_ids)
-        # new_egg = generate_new_egg(nests[i], test_ids)
-        
-        # Choose a random nest
-        k = random.randint(0, n_nests - 1)
-        
-        # Replace the nest if the new egg is better
-        # new_fitness = objective_function([new_egg], test_cases)
-        ind_fitness = test_cases[new_egg]['total_branch']
-        old_ind_fitness = test_cases[nests[i][j]]['total_branch']
-
-        # if new_fitness > fitness[k]:
-        #     nests[k] = new_egg
-        #     fitness[k] = new_fitness
+        for i in range(n_nests):
+            #i = random.randint(0, n_nests - 1)
+            j = random.randint(0, len(test_ids) - 1)
+            new_egg = generate_new_egg(nests[i][j], test_ids)
+            # new_egg = generate_new_egg(nests[i], test_ids)
             
-        #     # Update the best solution if needed
-        #     if new_fitness > best_fitness:
-        #         best_nest = new_egg
-        #         best_fitness = new_fitness
+            # Choose a random nest
+            k = random.randint(0, n_nests - 1)
+            
+            # Replace the nest if the new egg is better
+            # new_fitness = objective_function([new_egg], test_cases)
+            ind_fitness = test_cases[new_egg]['total_branch']
+            old_ind_fitness = test_cases[nests[i][j]]['total_branch']
 
-        if ind_fitness > old_ind_fitness:
-            nests[i][j] = new_egg
-            fitness[i] = objective_function(nests[i], test_cases)
-        #     # Update the best solution if needed
-        if fitness[i] > best_fitness:
-            best_nest = nests[i]
-            best_fitness = fitness[i]
+            # if new_fitness > fitness[k]:
+            #     nests[k] = new_egg
+            #     fitness[k] = new_fitness
+                
+            #     # Update the best solution if needed
+            #     if new_fitness > best_fitness:
+            #         best_nest = new_egg
+            #         best_fitness = new_fitness
+
+            if ind_fitness > old_ind_fitness:
+                nests[i][j] = new_egg
+                fitness[i] = objective_function(nests[i], test_cases)
+            #     # Update the best solution if needed
+            if fitness[i] > best_fitness:
+                best_nest = nests[i]
+                best_fitness = fitness[i]
 
 
         
@@ -77,5 +78,5 @@ def cuckoo_search(test_cases, n_nests, n_iterations, pa=0.25):
             nests[i] = random.sample(test_ids, len(test_ids))
             fitness[i] = objective_function(nests[i], test_cases)
     
-    return best_nest    
+    return best_nest
 

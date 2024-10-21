@@ -95,14 +95,7 @@ def hybrid_ga_search_ga(test_cases, n_nests, n_iterations, mutation_rate, pa=0.2
             ind_fitness = test_cases[new_egg]['total_branch']
             old_ind_fitness = test_cases[nests[i][j]]['total_branch']
 
-            # if new_fitness > fitness[k]:
-            #     nests[k] = new_egg
-            #     fitness[k] = new_fitness
-                
-            #     # Update the best solution if needed
-            #     if new_fitness > best_fitness:
-            #         best_nest = new_egg
-            #         best_fitness = new_fitness
+
 
             if ind_fitness > old_ind_fitness:
                 nests[i][j] = new_egg
@@ -113,9 +106,6 @@ def hybrid_ga_search_ga(test_cases, n_nests, n_iterations, mutation_rate, pa=0.2
                 best_fitness = fitness[i]
                 # Abandon worst nests and build new ones
         worst_nests = sorted(range(len(fitness)), key=lambda i: fitness[i])[:int(pa * n_nests)]
-        # print(range(len(fitness)))
-        # print(int(pa * n_nests),n_nests,pa)
-        # print(worst_nests)
         for i in worst_nests:
             nests[i] = random.sample(test_ids, len(test_cases))
             fitness[i] = objective_function(nests[i], test_cases)
