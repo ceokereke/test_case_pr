@@ -55,9 +55,6 @@ def crossover(parent1, parent2):
 
 def mutation(solution, test_ids, mutation_rate):
     if random.random() < mutation_rate:
-        # index = random.randint(0, len(solution) - 1)
-        # new_test_id = random.choice([t for t in test_ids if t not in solution])
-        # solution[index] = new_test_id
         idx1, idx2 = random.sample(range(len(solution)), 2)
         solution[idx1], solution[idx2] = solution[idx2], solution[idx1]
     return solution
@@ -81,10 +78,7 @@ def hybrid_ga_search_ga(test_cases, n_nests, n_iterations, mutation_rate, pa=0.2
         for i in range(n_nests):
         # i = random.randint(0, n_nests - 1)
             j = random.randint(0, len(nests[i]) - 1)
-            print(i,j,len(nests[i]))
-            print(nests[i][j])
             new_egg = generate_new_egg(nests[i][j], test_ids)
-            
             # new_egg = generate_new_egg(nests[i], test_ids)
             
             # Choose a random nest
