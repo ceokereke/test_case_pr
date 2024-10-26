@@ -1,5 +1,6 @@
 import random
 import numpy as np
+import obj_fxn
 
 def initialize_population(test_cases, population_size):
     test_ids = list(test_cases.keys())
