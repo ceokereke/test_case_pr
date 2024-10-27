@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import math
+import obj_fxn
 
 def read_test_cases(file_path):
     test_cases = {}
@@ -15,8 +16,9 @@ def read_test_cases(file_path):
                     test_cases[test_id] = {'id': test_id, 'total_branch': total_branch}
     return test_cases
 
-def objective_function(nest, test_cases):
-    return sum(test_cases[test_id]['total_branch'] for test_id in nest) / len(nest)
+
+# def objective_function(nest, test_cases):
+#     return sum(test_cases[test_id]['total_branch'] for test_id in nest) / len(nest)
 
 def initialize_population(test_cases, population_size):
     test_ids = list(test_cases.keys())
@@ -59,15 +61,15 @@ def mutation(solution, test_ids, mutation_rate):
         solution[idx1], solution[idx2] = solution[idx2], solution[idx1]
     return solution
 
-def hybrid_ga_search_ga(test_cases, n_nests, n_iterations, mutation_rate, pa=0.25,crossover_rate=0.6 ):
+def hybrid_ga_search_ga(test_cases, n_nests, n_iterations, mutation_rate,x, pa=0.25,crossover_rate=0.6 ):
     nests = initialize_population(test_cases, n_nests)
     test_ids = list(test_cases.keys())
 
     # # Initialize nests
     # nests = [random.sample(test_ids, n_eggs) for _ in range(n_nests)]
-    fitness = [objective_function(nest, test_cases) for nest in nests]
+    fitness = [obj_fxn.myDict[x](nest, test_cases) for nest in nests]
     
-    best_nest = max(nests, key=lambda nest: objective_function(nest, test_cases))
+    best_nest = max(nests, key=lambda nest: obj_fxn.myDict[x](nest, test_cases))
     best_fitness = max(fitness)
     print(best_fitness,best_nest)
     
@@ -85,7 +87,7 @@ def hybrid_ga_search_ga(test_cases, n_nests, n_iterations, mutation_rate, pa=0.2
             k = random.randint(0, n_nests - 1)
             
             # Replace the nest if the new egg is better
-            # new_fitness = objective_function([new_egg], test_cases)
+            # new_fitness = obj_fxn.myDict[x]([new_egg], test_cases)
             ind_fitness = test_cases[new_egg]['total_branch']
             old_ind_fitness = test_cases[nests[i][j]]['total_branch']
 
@@ -93,7 +95,7 @@ def hybrid_ga_search_ga(test_cases, n_nests, n_iterations, mutation_rate, pa=0.2
 
             if ind_fitness > old_ind_fitness:
                 nests[i][j] = new_egg
-                fitness[i] = objective_function(nests[i], test_cases)
+                fitness[i] = obj_fxn.myDict[x](nests[i], test_cases)
             #     # Update the best solution if needed
             if fitness[i] > best_fitness:
                 best_nest = nests[i]
@@ -102,7 +104,7 @@ def hybrid_ga_search_ga(test_cases, n_nests, n_iterations, mutation_rate, pa=0.2
         worst_nests = sorted(range(len(fitness)), key=lambda i: fitness[i])[:int(pa * n_nests)]
         for i in worst_nests:
             nests[i] = random.sample(test_ids, len(test_cases))
-            fitness[i] = objective_function(nests[i], test_cases)
+            fitness[i] = obj_fxn.myDict[x](nests[i], test_cases)
 
         
         # Genetic Algorithm phase
@@ -110,7 +112,7 @@ def hybrid_ga_search_ga(test_cases, n_nests, n_iterations, mutation_rate, pa=0.2
         if random.random() < crossover_rate:
             partner = random.choice(nests)
             child = crossover(nests[i], partner)
-            child_fitness = objective_function(child, test_cases)
+            child_fitness = obj_fxn.myDict[x](child, test_cases)
             
             if child_fitness > fitness[i]:
                 nests[i] = child
@@ -121,14 +123,14 @@ def hybrid_ga_search_ga(test_cases, n_nests, n_iterations, mutation_rate, pa=0.2
                     best_fitness = child_fitness
         
         nests[i] = mutation(nests[i], test_ids, mutation_rate)
-        fitness[i] = objective_function(nests[i], test_cases)
+        fitness[i] = obj_fxn.myDict[x](nests[i], test_cases)
         
 
                     # Abandon worst nests and build new ones
         # worst_nests = sorted(range(len(fitness)), key=lambda i: fitness[i])[:int(pa * n_nests)]
         # for i in worst_nests:
         #     nests[i] = random.sample(test_ids, n_eggs)
-        #     fitness[i] = objective_function(nests[i], test_cases)
+        #     fitness[i] = obj_fxn.myDict[x](nests[i], test_cases)
     return best_nest, test_ids, best_fitness
 
 # Main execution
