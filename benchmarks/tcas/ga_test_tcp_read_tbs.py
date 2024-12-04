@@ -6,8 +6,8 @@ def initialize_population(test_cases, population_size):
     test_ids = list(test_cases.keys())
     return [random.sample(test_ids, len(test_ids)) for _ in range(population_size)]
 
-def fitness(individual, test_cases):
-    return sum(test_cases[test_id]['total_branch'] for test_id in individual) / len(individual)
+# def fitness(individual, test_cases):
+#     return sum(test_cases[test_id]['total_branch'] for test_id in individual) / len(individual)
 
 def select_parents(population, fitness_scores):
     return random.choices(population, weights=fitness_scores, k=2)
@@ -28,11 +28,11 @@ def mutate(individual, mutation_rate):
 
 
 
-def genetic_algorithm(test_cases, population_size, generations, mutation_rate):
+def genetic_algorithm(test_cases,fxn, population_size, generations, mutation_rate):
     population = initialize_population(test_cases, population_size)
     
     for _ in range(generations):
-        fitness_scores = [fitness(ind, test_cases) for ind in population]
+        fitness_scores = [obj_fxn.myDict[fxn](ind, test_cases) for ind in population]
         new_population = []
         
         for _ in range(population_size):
@@ -43,7 +43,7 @@ def genetic_algorithm(test_cases, population_size, generations, mutation_rate):
         
         population = new_population
     
-    best_individual = max(population, key=lambda x: fitness(x, test_cases))
-    best_fitness = fitness(best_individual, test_cases)
+    best_individual = max(population, key=lambda x: obj_fxn.myDict[fxn](x, test_cases))
+    best_fitness = obj_fxn.myDict[fxn](best_individual, test_cases)
     
     return best_individual

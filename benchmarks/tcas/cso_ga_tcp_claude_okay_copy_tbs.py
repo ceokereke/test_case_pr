@@ -61,13 +61,13 @@ def mutation(solution, test_ids, mutation_rate):
         solution[idx1], solution[idx2] = solution[idx2], solution[idx1]
     return solution
 
-def hybrid_ga_search_ga(test_cases, n_nests, n_iterations, mutation_rate,x, pa=0.25,crossover_rate=0.6 ):
+def hybrid_ga_search_ga(test_cases,fxn, n_nests, n_iterations, mutation_rate,x, pa=0.25,crossover_rate=0.6 ):
     nests = initialize_population(test_cases, n_nests)
     test_ids = list(test_cases.keys())
 
     # # Initialize nests
     # nests = [random.sample(test_ids, n_eggs) for _ in range(n_nests)]
-    fitness = [obj_fxn.myDict[x](nest, test_cases) for nest in nests]
+    fitness = [obj_fxn.myDict[fxn](nest, test_cases) for nest in nests]
     
     best_nest = max(nests, key=lambda nest: obj_fxn.myDict[x](nest, test_cases))
     best_fitness = max(fitness)
@@ -95,7 +95,7 @@ def hybrid_ga_search_ga(test_cases, n_nests, n_iterations, mutation_rate,x, pa=0
 
             if ind_fitness > old_ind_fitness:
                 nests[i][j] = new_egg
-                fitness[i] = obj_fxn.myDict[x](nests[i], test_cases)
+                fitness[i] = obj_fxn.myDict[fxn](nests[i], test_cases)
             #     # Update the best solution if needed
             if fitness[i] > best_fitness:
                 best_nest = nests[i]
@@ -112,7 +112,7 @@ def hybrid_ga_search_ga(test_cases, n_nests, n_iterations, mutation_rate,x, pa=0
         if random.random() < crossover_rate:
             partner = random.choice(nests)
             child = crossover(nests[i], partner)
-            child_fitness = obj_fxn.myDict[x](child, test_cases)
+            child_fitness = obj_fxn.myDict[fxn](child, test_cases)
             
             if child_fitness > fitness[i]:
                 nests[i] = child
@@ -144,8 +144,9 @@ if __name__ == "__main__":
     pa = 0.25
     crossover_rate = 0.6
     mutation_rate = 0.1
+    fxn = obj_fxn.myDict[0]
 
-    best_solution,test_idS = hybrid_ga_search_ga(test_cases, n_nests, n_eggs, n_iterations, mutation_rate, pa, crossover_rate)
+    best_solution,test_idS = hybrid_ga_search_ga(test_cases, fxn, n_nests, n_eggs, n_iterations, mutation_rate, pa, crossover_rate)
 
     print(f"Total number of test cases: {len(test_cases)}")
     print(f"\nBest Solution ({n_eggs} test cases):")

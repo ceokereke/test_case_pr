@@ -1,9 +1,10 @@
 import numpy as np
 import random
 import math
+import obj_fxn
 
-def objective_function(nest, test_cases):
-    return sum(test_cases[test_id]['total_branch'] for test_id in nest) / len(nest)
+# def objective_function(nest, test_cases):
+#     return sum(test_cases[test_id]['total_branch'] for test_id in nest) / len(nest)
 
 def levy_flight(n):
     beta = 3 / 2
@@ -24,16 +25,16 @@ def generate_new_egg(current_egg, test_ids):
     return new_egg
 
 
-def cuckoo_search(test_cases, n_nests, n_iterations, pa=0.25):
+def cuckoo_search(test_cases,fxn, n_nests, n_iterations, pa=0.25):
     test_ids = list(test_cases.keys())
     
     # Initialize nests (each nest contains eggs)
     nests = [random.sample(test_ids, len(test_ids)) for _ in range(n_nests)]
     # print(nests)
-    fitness = [objective_function(nest, test_cases) for nest in nests]
+    fitness = [obj_fxn.myDict[fxn](nest, test_cases) for nest in nests]
     # print(fitness)
     
-    best_nest = max(nests, key=lambda nest: objective_function(nest, test_cases))
+    best_nest = max(nests, key=lambda nest: obj_fxn.myDict[fxn](nest, test_cases))
     best_fitness = max(fitness)
     # print(best_nest, best_fitness)
     
@@ -48,7 +49,7 @@ def cuckoo_search(test_cases, n_nests, n_iterations, pa=0.25):
         k = random.randint(0, n_nests - 1)
         
         # Replace the nest if the new egg is better
-        # new_fitness = objective_function([new_egg], test_cases)
+        # new_fitness = obj_fxn.myDict[fxn]([new_egg], test_cases)
         ind_fitness = test_cases[new_egg]['total_branch']
         old_ind_fitness = test_cases[nests[i][j]]['total_branch']
 
@@ -63,7 +64,7 @@ def cuckoo_search(test_cases, n_nests, n_iterations, pa=0.25):
 
         if ind_fitness > old_ind_fitness:
             nests[i][j] = new_egg
-            fitness[i] = objective_function(nests[i], test_cases)
+            fitness[i] = obj_fxn.myDict[fxn](nests[i], test_cases)
         #     # Update the best solution if needed
         if fitness[i] > best_fitness:
             best_nest = nests[i]
@@ -75,7 +76,7 @@ def cuckoo_search(test_cases, n_nests, n_iterations, pa=0.25):
         worst_nests = sorted(range(len(fitness)), key=lambda i: fitness[i])[:int(pa * n_nests)]
         for i in worst_nests:
             nests[i] = random.sample(test_ids, len(test_ids))
-            fitness[i] = objective_function(nests[i], test_cases)
+            fitness[i] = obj_fxn.myDict[fxn](nests[i], test_cases)
     
     return best_nest    
 
