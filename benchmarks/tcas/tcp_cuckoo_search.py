@@ -31,6 +31,8 @@ def cuckoo_search(test_cases,fxn, n_nests, n_iterations, pa=0.25):
     # Initialize nests (each nest contains eggs)
     nests = [random.sample(test_ids, len(test_ids)) for _ in range(n_nests)]
     # print(nests)
+
+    sorted_test_cases = sorted(test_cases, key=lambda x: x[1], reverse=True)
     fitness = [obj_fxn.myDict[fxn](nest, test_cases) for nest in nests]
     # print(fitness)
     
@@ -50,7 +52,7 @@ def cuckoo_search(test_cases,fxn, n_nests, n_iterations, pa=0.25):
         
         # Replace the nest if the new egg is better
         # new_fitness = obj_fxn.myDict[fxn]([new_egg], test_cases)
-        ind_fitness = test_cases[new_egg]['total_branch']
+        ind_fitness = test_cases[new_egg]['total_branch'] 
         old_ind_fitness = test_cases[nests[i][j]]['total_branch']
 
         # if new_fitness > fitness[k]:

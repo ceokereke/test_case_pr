@@ -11,9 +11,9 @@
 import subprocess
 import testset_parse_copy
 import rand_pri
-import cuckoo_search_tcp_tbs
-import ga_test_tcp_read_tbs
-import cso_ga_tcp_claude_okay_copy_tbs
+import tcp_cuckoo_search as tcp_cuckoo_search
+import tcp_ga_test as tcp_ga_test
+import tcp_cso_ga as tcp_cso_ga
 import pickle as pick
 
 
@@ -86,9 +86,7 @@ def main (fxn):
                     # percentage_coverage = float(test_data[1])
                     total_branch = float(test_data[4])
                     # test_cases[test_id] = {'id': test_id, 'percentage_coverage': percentage_coverage}
-                    test_cases[test_id] = {'id': test_id, 
-                                        'total_branch': total_branch,
-                                        }
+                    test_cases[test_id] = test_data
 
 
     print ("################################\nEntered CSO prioritization\n################################\n")
@@ -96,21 +94,21 @@ def main (fxn):
     population_size = 100 # number of nests
 
     generations = 300 #generations or iterations
-    best_test_cso =cuckoo_search_tcp_tbs.cuckoo_search(test_cases,fxn, population_size,generations)
+    best_test_cso =tcp_cuckoo_search.cuckoo_search(test_cases,fxn, population_size,generations)
 
 
     print ("################################\nEntered GA prioritization\n################################\n")
     #No of Priority cases should be considered
     mutation_rate = 0.2
 
-    best_test_ga = ga_test_tcp_read_tbs.genetic_algorithm(test_cases,fxn, population_size, generations, mutation_rate)
+    best_test_ga = tcp_ga_test.genetic_algorithm(test_cases,fxn, population_size, generations, mutation_rate)
 
 
     print ("################################\nEntered CSO+GA prioritization\n################################\n")
 
     # best_test_cso_ga, all_tests = cso_ga_tcp_claude.hybrid_ga_search_ga(test_cases, population_size,no_tcp, generations, mutation_rate)
 
-    best_test_cso_ga, all_tests,best_test_cso_ga_fitness = cso_ga_tcp_claude_okay_copy_tbs.hybrid_ga_search_ga(test_cases,fxn, population_size, generations, mutation_rate)
+    best_test_cso_ga, all_tests,best_test_cso_ga_fitness = tcp_cso_ga.hybrid_ga_search_ga(test_cases,fxn, population_size, generations, mutation_rate)
 
     print ("################################\nResult Section\n################################\n")
 

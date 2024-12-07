@@ -2,6 +2,7 @@
 print("Reading Test cases file")
 file_path = "output_file_or.txt"
 test_cases = {}
+n=1
 with open(file_path, 'r') as file:
     for line in file:
         parts = line.strip().split(':')
@@ -13,4 +14,4 @@ with open(file_path, 'r') as file:
                 total_branch = float(test_data[4])
                 # test_cases[test_id] = {'id': test_id, 'percentage_coverage': percentage_coverage}
                 test_cases[test_id] = test_data
-print (test_cases[1][0])
+print (test_cases["1"])
