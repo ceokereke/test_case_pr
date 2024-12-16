@@ -1,7 +1,7 @@
         -:    0:Source:printtokens.c
         -:    0:Graph:printtokens.gcno
-        -:    0:Data:printtokens.gcda
-        -:    0:Runs:1
+        -:    0:Data:-
+        -:    0:Runs:0
         -:    1:
         -:    2:
         -:    3:# include <ctype.h>
@@ -26,36 +26,36 @@
         -:   22:static int next_state();
         -:   23:static get_actual_token(char token_str[],int token_ind);
         -:   24:
-function main called 1 returned 0% blocks executed 73%
-        1:   25:main(argc,argv)
+function main called 0 returned 0% blocks executed 0%
+    #####:   25:main(argc,argv)
         -:   26:int argc;
         -:   27:char *argv[];
         -:   28:{
         -:   29:      token token_ptr;
         -:   30:      token_stream stream_ptr;
         -:   31:
-        1:   32:      if(argc>2)
-branch  0 taken 0 (fallthrough)
-branch  1 taken 1
+    #####:   32:      if(argc>2)
+branch  0 never executed
+branch  1 never executed
         -:   33:      {
     #####:   34:          fprintf(stdout, "The format is print_tokens filename(optional)\n");
 call    0 never executed
     #####:   35:          exit(1);
 call    0 never executed
         -:   36:      }
-        1:   37:      stream_ptr=open_token_stream(argv[1]);
-call    0 returned 1
+    #####:   37:      stream_ptr=open_token_stream(argv[1]);
+call    0 never executed
         -:   38:
-        1:   39:      while(!is_eof_token((token_ptr=get_token(stream_ptr))))
-call    0 returned 1
-call    1 returned 1
-branch  2 taken 0
-branch  3 taken 1 (fallthrough)
+    #####:   39:      while(!is_eof_token((token_ptr=get_token(stream_ptr))))
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
     #####:   40:                print_token(token_ptr);
 call    0 never executed
-        1:   41:      print_token(token_ptr);
-call    0 returned 1
-        1:   42:  exit(0);
+    #####:   41:      print_token(token_ptr);
+call    0 never executed
+    #####:   42:  exit(0);
         -:   43:}
         -:   44:
         -:   45:
@@ -73,19 +73,19 @@ call    0 returned 1
         -:   57:                       empty string. If it is it assigns file pointer
         -:   58:                       to stdin else it opens the respective file as input.                   * ******************************************************************* */
         -:   59:
-function open_character_stream called 1 returned 100% blocks executed 50%
-        1:   60:character_stream open_character_stream(FILENAME)
+function open_character_stream called 0 returned 0% blocks executed 0%
+    #####:   60:character_stream open_character_stream(FILENAME)
         -:   61:string FILENAME;
         -:   62:{
         -:   63:      character_stream stream_ptr;
         -:   64:
-        1:   65:      stream_ptr=(character_stream)malloc(sizeof(struct stream_type));
-        1:   66:      stream_ptr->stream_ind=START;
-        1:   67:      stream_ptr->stream[START]='\0';
-        1:   68:      if(FILENAME == NULL)
-branch  0 taken 1 (fallthrough)
-branch  1 taken 0
-        1:   69:          stream_ptr->fp=stdin;
+    #####:   65:      stream_ptr=(character_stream)malloc(sizeof(struct stream_type));
+    #####:   66:      stream_ptr->stream_ind=START;
+    #####:   67:      stream_ptr->stream[START]='\0';
+    #####:   68:      if(FILENAME == NULL)
+branch  0 never executed
+branch  1 never executed
+    #####:   69:          stream_ptr->fp=stdin;
     #####:   70:      else if((stream_ptr->fp=fopen(FILENAME,"r"))==NULL)
 call    0 never executed
 branch  1 never executed
@@ -96,7 +96,7 @@ call    0 never executed
     #####:   73:               exit(0);
 call    0 never executed
         -:   74:           }
-        1:   75:      return(stream_ptr);
+    #####:   75:      return(stream_ptr);
         -:   76:}
         -:   77:
         -:   78:/* *********************************************************************
@@ -110,22 +110,22 @@ call    0 never executed
         -:   86:                   returns the character.
         -:   87: * ****************************************************************** */
         -:   88:
-function get_char called 8 returned 100% blocks executed 100%
-        8:   89:CHARACTER get_char(stream_ptr)
+function get_char called 0 returned 0% blocks executed 0%
+    #####:   89:CHARACTER get_char(stream_ptr)
         -:   90:character_stream stream_ptr;
         -:   91:{
-        8:   92:      if(stream_ptr->stream[stream_ptr->stream_ind] == '\0')
-branch  0 taken 3 (fallthrough)
-branch  1 taken 5
+    #####:   92:      if(stream_ptr->stream[stream_ptr->stream_ind] == '\0')
+branch  0 never executed
+branch  1 never executed
         -:   93:      {
-        3:   94:              if(fgets(stream_ptr->stream+START,80-START,stream_ptr->fp) == NULL)/* Fix bug: add -START - hf*/
-call    0 returned 3
-branch  1 taken 1 (fallthrough)
-branch  2 taken 2
-        1:   95:                    stream_ptr->stream[START]=EOF;
-        3:   96:              stream_ptr->stream_ind=START;
+    #####:   94:              if(fgets(stream_ptr->stream+START,80-START,stream_ptr->fp) == NULL)/* Fix bug: add -START - hf*/
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:   95:                    stream_ptr->stream[START]=EOF;
+    #####:   96:              stream_ptr->stream_ind=START;
         -:   97:      }
-        8:   98:      return(stream_ptr->stream[(stream_ptr->stream_ind)++]);
+    #####:   98:      return(stream_ptr->stream[(stream_ptr->stream_ind)++]);
         -:   99:}
         -:  100:
         -:  101:/* *******************************************************************
@@ -139,16 +139,16 @@ branch  2 taken 2
         -:  109:                   returns the value according to it.
         -:  110: * ****************************************************************** */
         -:  111:
-function is_end_of_character_stream called 5 returned 100% blocks executed 100%
-        5:  112:BOOLEAN is_end_of_character_stream(stream_ptr)
+function is_end_of_character_stream called 0 returned 0% blocks executed 0%
+    #####:  112:BOOLEAN is_end_of_character_stream(stream_ptr)
         -:  113:character_stream stream_ptr;
         -:  114:{
-        5:  115:      if(stream_ptr->stream[stream_ptr->stream_ind-1] == EOF)
-branch  0 taken 1 (fallthrough)
-branch  1 taken 4
-        1:  116:            return(TRUE);
+    #####:  115:      if(stream_ptr->stream[stream_ptr->stream_ind-1] == EOF)
+branch  0 never executed
+branch  1 never executed
+    #####:  116:            return(TRUE);
         -:  117:      else
-        4:  118:            return(FALSE);
+    #####:  118:            return(FALSE);
         -:  119:}
         -:  120:
         -:  121:/* *********************************************************************
@@ -188,17 +188,17 @@ branch  1 never executed
         -:  152:                   input. This function returns the token_stream.
         -:  153: * ****************************************************************** */
         -:  154:
-function open_token_stream called 1 returned 100% blocks executed 100%
-        1:  155:token_stream open_token_stream(FILENAME)
+function open_token_stream called 0 returned 0% blocks executed 0%
+    #####:  155:token_stream open_token_stream(FILENAME)
         -:  156:string FILENAME;
         -:  157:{
         -:  158:    token_stream token_ptr;
         -:  159:
-        1:  160:    token_ptr=(token_stream)malloc(sizeof(struct token_stream_type));
-        1:  161:    token_ptr->ch_stream=open_character_stream(FILENAME);/* Get character
-call    0 returned 1
+    #####:  160:    token_ptr=(token_stream)malloc(sizeof(struct token_stream_type));
+    #####:  161:    token_ptr->ch_stream=open_character_stream(FILENAME);/* Get character
+call    0 never executed
         -:  162:                                                             stream  */
-        1:  163:    return(token_ptr);
+    #####:  163:    return(token_ptr);
         -:  164:}
         -:  165:
         -:  166:/* ********************************************************************
@@ -214,8 +214,8 @@ call    0 returned 1
         -:  176:                   returns the token type.
         -:  177:* ******************************************************************* */
         -:  178:
-function get_token called 1 returned 100% blocks executed 46%
-        1:  179:token get_token(tstream_ptr)
+function get_token called 0 returned 0% blocks executed 0%
+    #####:  179:token get_token(tstream_ptr)
         -:  180:token_stream tstream_ptr;
         -:  181:{
         -:  182:      char token_str[80]; /* This buffer stores the current token */
@@ -224,41 +224,41 @@ function get_token called 1 returned 100% blocks executed 46%
         -:  185:      CHARACTER ch;
         -:  186:      int cu_state,next_st,token_found;
         -:  187:
-        1:  188:      token_ptr=(token)(malloc(sizeof(struct token_type)));
-        1:  189:      ch=get_char(tstream_ptr->ch_stream);
-call    0 returned 1
-        1:  190:      cu_state=token_ind=token_found=0;
-        3:  191:      while(!token_found)
-branch  0 taken 3
-branch  1 taken 0 (fallthrough)
+    #####:  188:      token_ptr=(token)(malloc(sizeof(struct token_type)));
+    #####:  189:      ch=get_char(tstream_ptr->ch_stream);
+call    0 never executed
+    #####:  190:      cu_state=token_ind=token_found=0;
+    #####:  191:      while(!token_found)
+branch  0 never executed
+branch  1 never executed
         -:  192:      {
-        3:  193:	  if(token_ind < 80) /* ADDED ERROR CHECK - hf */
-branch  0 taken 3 (fallthrough)
-branch  1 taken 0
+    #####:  193:	  if(token_ind < 80) /* ADDED ERROR CHECK - hf */
+branch  0 never executed
+branch  1 never executed
         -:  194:	  {
-        3:  195:	      token_str[token_ind++]=ch;
-        3:  196:	      next_st=next_state(cu_state,ch);
-call    0 returned 3
+    #####:  195:	      token_str[token_ind++]=ch;
+    #####:  196:	      next_st=next_state(cu_state,ch);
+call    0 never executed
         -:  197:	  }
         -:  198:	  else
         -:  199:	  {
     #####:  200:	      next_st = -1; /* - hf */
         -:  201:	  }
-        3:  202:	  if (next_st == -1) { /* ERROR or EOF case */
-branch  0 taken 1 (fallthrough)
-branch  1 taken 2
-        1:  203:	      return(error_or_eof_case(tstream_ptr,
-call    0 returned 1
+    #####:  202:	  if (next_st == -1) { /* ERROR or EOF case */
+branch  0 never executed
+branch  1 never executed
+    #####:  203:	      return(error_or_eof_case(tstream_ptr,
+call    0 never executed
         -:  204:				       token_ptr,cu_state,token_str,token_ind,ch));
-        2:  205:	  } else if (next_st == -2) {/* This is numeric case. */
-branch  0 taken 0 (fallthrough)
-branch  1 taken 2
+    #####:  205:	  } else if (next_st == -2) {/* This is numeric case. */
+branch  0 never executed
+branch  1 never executed
     #####:  206:	      return(numeric_case(tstream_ptr,token_ptr,ch,
 call    0 never executed
         -:  207:				  token_str,token_ind));
-        2:  208:	  } else if (next_st == -3) {/* This is the IDENTIFIER case */
-branch  0 taken 0 (fallthrough)
-branch  1 taken 2
+    #####:  208:	  } else if (next_st == -3) {/* This is the IDENTIFIER case */
+branch  0 never executed
+branch  1 never executed
     #####:  209:	      token_ptr->token_id=IDENTIFIER;
     #####:  210:	      unget_char(ch,tstream_ptr->ch_stream);
 call    0 never executed
@@ -269,14 +269,14 @@ call    0 never executed
     #####:  214:	      return(token_ptr);
         -:  215:	  }
         -:  216:
-        2:  217:	  switch(next_st)
-branch  0 taken 1
-branch  1 taken 0
-branch  2 taken 0
-branch  3 taken 0
-branch  4 taken 1
+    #####:  217:	  switch(next_st)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
         -:  218:            {
-        1:  219:                 default : break;
+    #####:  219:                 default : break;
     #####:  220:                 case 6  : /* These are all KEYWORD cases. */
         -:  221:                 case 9  :
         -:  222:                 case 11 :
@@ -316,15 +316,15 @@ call    0 never executed
 call    0 never executed
     #####:  247:                           strcpy(token_ptr->token_string,token_str);
     #####:  248:                           return(token_ptr);
-        1:  249:                 case 30 :  /* This is COMMENT case */
-        1:  250:                           skip(tstream_ptr->ch_stream);
-call    0 returned 1
-        1:  251:                           token_ind=next_st=0;
-        1:  252:                           break;
+    #####:  249:                 case 30 :  /* This is COMMENT case */
+    #####:  250:                           skip(tstream_ptr->ch_stream);
+call    0 never executed
+    #####:  251:                           token_ind=next_st=0;
+    #####:  252:                           break;
         -:  253:            }
-        2:  254:            cu_state=next_st;
-        2:  255:            ch=get_char(tstream_ptr->ch_stream);
-call    0 returned 2
+    #####:  254:            cu_state=next_st;
+    #####:  255:            ch=get_char(tstream_ptr->ch_stream);
+call    0 never executed
         -:  256:      }
     #####:  257:}
         -:  258:
@@ -389,21 +389,21 @@ call    0 never executed
         -:  303:                   token.
         -:  304: * *****************************************************************/
         -:  305:
-function error_or_eof_case called 1 returned 100% blocks executed 44%
-        1:  306:static token error_or_eof_case(tstream_ptr,token_ptr,cu_state,token_str,token_ind,ch)
+function error_or_eof_case called 0 returned 0% blocks executed 0%
+    #####:  306:static token error_or_eof_case(tstream_ptr,token_ptr,cu_state,token_str,token_ind,ch)
         -:  307:token_stream tstream_ptr;
         -:  308:token token_ptr;
         -:  309:int cu_state,token_ind;
         -:  310:char token_str[],ch;
         -:  311:{
-        1:  312:      if(is_end_of_character_stream(tstream_ptr->ch_stream))
-call    0 returned 1
-branch  1 taken 1 (fallthrough)
-branch  2 taken 0
+    #####:  312:      if(is_end_of_character_stream(tstream_ptr->ch_stream))
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
         -:  313:      {
-        1:  314:            token_ptr->token_id = EOTSTREAM;
-        1:  315:            token_ptr->token_string[0]='\0';
-        1:  316:            return(token_ptr);
+    #####:  314:            token_ptr->token_id = EOTSTREAM;
+    #####:  315:            token_ptr->token_string[0]='\0';
+    #####:  316:            return(token_ptr);
         -:  317:      }
     #####:  318:      if(cu_state !=0)
 branch  0 never executed
@@ -527,26 +527,26 @@ call    0 never executed
         -:  407:                   end_of_character_stream.
         -:  408: * ******************************************************************* */
         -:  409:
-function skip called 1 returned 100% blocks executed 89%
-        1:  410:static skip(stream_ptr)
+function skip called 0 returned 0% blocks executed 0%
+    #####:  410:static skip(stream_ptr)
         -:  411:character_stream stream_ptr;
         -:  412:{
         -:  413:        char c;
         -:  414:
-        5:  415:        while((c=get_char(stream_ptr))!='\n' &&
-call    0 returned 5
-branch  1 taken 4 (fallthrough)
-branch  2 taken 1
-branch  3 taken 4
-branch  4 taken 0 (fallthrough)
-        4:  416:               !is_end_of_character_stream(stream_ptr))
-call    0 returned 4
+    #####:  415:        while((c=get_char(stream_ptr))!='\n' &&
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+    #####:  416:               !is_end_of_character_stream(stream_ptr))
+call    0 never executed
         -:  417:             ; /* Skip the characters until EOF or EOL found. */
-       1*:  418:	if(c==EOF) unget_char(c, stream_ptr); /* Put back to leave gracefully - hf */
-branch  0 taken 0 (fallthrough)
-branch  1 taken 1
+    #####:  418:	if(c==EOF) unget_char(c, stream_ptr); /* Put back to leave gracefully - hf */
+branch  0 never executed
+branch  1 never executed
 call    2 never executed
-        1:  419:        return;
+    #####:  419:        return;
         -:  420:}
         -:  421:
         -:  422:/* *********************************************************************
@@ -585,30 +585,30 @@ branch  2 never executed
         -:  451:                   state state and the inpu character ch.
         -:  452: * ****************************************************************** */
         -:  453:
-function next_state called 6 returned 100% blocks executed 100%
-        6:  454:static int next_state(state,ch)
+function next_state called 0 returned 0% blocks executed 0%
+    #####:  454:static int next_state(state,ch)
         -:  455:int state;
         -:  456:char ch;
         -:  457:{
-        6:  458:    if(state < 0)
-branch  0 taken 1 (fallthrough)
-branch  1 taken 5
-        1:  459:      return(state);
-        5:  460:    if(base[state]+ch >= 0)
-branch  0 taken 3 (fallthrough)
-branch  1 taken 2
+    #####:  458:    if(state < 0)
+branch  0 never executed
+branch  1 never executed
+    #####:  459:      return(state);
+    #####:  460:    if(base[state]+ch >= 0)
+branch  0 never executed
+branch  1 never executed
         -:  461:    {
-        3:  462:        if(check[base[state]+ch] == state) /* Check for the right state */
-branch  0 taken 2 (fallthrough)
-branch  1 taken 1
-        2:  463:             return(next[base[state]+ch]);
+    #####:  462:        if(check[base[state]+ch] == state) /* Check for the right state */
+branch  0 never executed
+branch  1 never executed
+    #####:  463:             return(next[base[state]+ch]);
         -:  464:        else
-        1:  465:              return(next_state(default1[state],ch));
-call    0 returned 1
+    #####:  465:              return(next_state(default1[state],ch));
+call    0 never executed
         -:  466:    }
         -:  467:    else
-        2:  468:        return(next_state(default1[state],ch));
-call    0 returned 2
+    #####:  468:        return(next_state(default1[state],ch));
+call    0 never executed
         -:  469:}
         -:  470:
         -:  471:/* *********************************************************************
@@ -621,14 +621,14 @@ call    0 returned 2
         -:  478:                   EOTSTREAM then it is eof_token.
         -:  479: * ***************************************************************** */
         -:  480:
-function is_eof_token called 1 returned 100% blocks executed 75%
-        1:  481:BOOLEAN is_eof_token(t)
+function is_eof_token called 0 returned 0% blocks executed 0%
+    #####:  481:BOOLEAN is_eof_token(t)
         -:  482:token t;
         -:  483:{
-        1:  484:    if(t->token_id==EOTSTREAM)
-branch  0 taken 1 (fallthrough)
-branch  1 taken 0
-        1:  485:        return(TRUE);
+    #####:  484:    if(t->token_id==EOTSTREAM)
+branch  0 never executed
+branch  1 never executed
+    #####:  485:        return(TRUE);
     #####:  486:    return(FALSE);
         -:  487:}
         -:  488:
@@ -646,39 +646,39 @@ branch  1 taken 0
         -:  500:                   and it is the limitation of the program.
         -:  501: * ******************************************************************** */
         -:  502:
-function print_token called 1 returned 100% blocks executed 8%
-        1:  503:BOOLEAN print_token(token_ptr)
+function print_token called 0 returned 0% blocks executed 0%
+    #####:  503:BOOLEAN print_token(token_ptr)
         -:  504:token token_ptr;
         -:  505:{
-        1:  506:     switch(token_ptr->token_id)
-branch  0 taken 0
-branch  1 taken 1
-branch  2 taken 0
-branch  3 taken 0
-branch  4 taken 0
-branch  5 taken 0
-branch  6 taken 0
-branch  7 taken 0
-branch  8 taken 0
-branch  9 taken 0
-branch 10 taken 0
-branch 11 taken 0
-branch 12 taken 0
-branch 13 taken 0
-branch 14 taken 0
-branch 15 taken 0
-branch 16 taken 0
-branch 17 taken 0
-branch 18 taken 0
-branch 19 taken 0
+    #####:  506:     switch(token_ptr->token_id)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+branch  9 never executed
+branch 10 never executed
+branch 11 never executed
+branch 12 never executed
+branch 13 never executed
+branch 14 never executed
+branch 15 never executed
+branch 16 never executed
+branch 17 never executed
+branch 18 never executed
+branch 19 never executed
         -:  507:     {    /* Print the respective tokens. */
     #####:  508:          case ERROR : fprintf(stdout, "error,\t\"");fprintf(stdout, "%s",token_ptr->token_string);
 call    0 never executed
 call    1 never executed
     #####:  509:                       fprintf(stdout, "\".\n");return(TRUE);
 call    0 never executed
-        1:  510:          case EOTSTREAM : fprintf(stdout, "eof.\n");return(TRUE);
-call    0 returned 1
+    #####:  510:          case EOTSTREAM : fprintf(stdout, "eof.\n");return(TRUE);
+call    0 never executed
     #####:  511:          case 6 : fprintf(stdout, "keyword,\t\"lambda\".\n");return(TRUE);
 call    0 never executed
     #####:  512:          case 9 : fprintf(stdout, "keyword,\t\"and\".\n");return(TRUE);

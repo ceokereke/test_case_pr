@@ -1,0 +1,16 @@
+ga_cso , 
+Objective fxn, Ave AFPD,  Ave CE, 
+2, 0.9930360651136683, 0.9798624754420432, 
+
+ga , 
+Objective fxn, Ave AFPD,  Ave CE, 
+2, 0.9794590232949761, 0.9268172888015718, 
+
+cso , 
+Objective fxn, Ave AFPD,  Ave CE, 
+2, 0.9801255964075218, 0.9120825147347741, 
+
+rand , 
+Objective fxn, Ave AFPD,  Ave CE, 
+2, 0.9895628683693517, 0.9425343811394892, 
+

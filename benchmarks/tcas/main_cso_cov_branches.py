@@ -9,6 +9,7 @@
 '''
 
 import subprocess
+import sys
 import testset_parse_copy
 import rand_pri
 import tcp_cuckoo_search as tcp_cuckoo_search
@@ -18,7 +19,7 @@ import pickle as pick
 
 
 
-def main (fxn):
+def main (fxn,iter):
     '''
     Initializations
     '''
@@ -83,18 +84,26 @@ def main (fxn):
                 test_id = parts[0]
                 test_data = eval(parts[1])
                 if len(test_data) >= 2:
-                    # percentage_coverage = float(test_data[1])
-                    total_branch = float(test_data[4])
-                    # test_cases[test_id] = {'id': test_id, 'percentage_coverage': percentage_coverage}
-                    test_cases[test_id] = test_data
+                    if (fxn < 7):
+                        # percentage_coverage = float(test_data[1])
+                        data = float(test_data[fxn])
+                        # test_cases[test_id] = {'id': test_id, 'percentage_coverage': percentage_coverage}
+                        test_cases[test_id] = data
+                    else:
+                         data = test_data[1:7]
+                         test_cases[test_id] = data
 
 
     print ("################################\nEntered CSO prioritization\n################################\n")
     #No of Priority cases should be considered
-    population_size = 100 # number of nests
+    population_size = 50 # number of nests
 
     generations = 300 #generations or iterations
     best_test_cso =tcp_cuckoo_search.cuckoo_search(test_cases,fxn, population_size,generations)
+    # print(best_test_cso)
+    best_cso_values = [test_cases[test_id] for test_id in best_test_cso]
+    # print(best_cso_values)
+    
 
 
     print ("################################\nEntered GA prioritization\n################################\n")
@@ -102,14 +111,22 @@ def main (fxn):
     mutation_rate = 0.2
 
     best_test_ga = tcp_ga_test.genetic_algorithm(test_cases,fxn, population_size, generations, mutation_rate)
+    # print(best_test_ga)
+    best_ga_values = [test_cases[test_id] for test_id in best_test_ga]
+    # print(best_ga_values)
+    
 
 
     print ("################################\nEntered CSO+GA prioritization\n################################\n")
 
     # best_test_cso_ga, all_tests = cso_ga_tcp_claude.hybrid_ga_search_ga(test_cases, population_size,no_tcp, generations, mutation_rate)
 
-    best_test_cso_ga, all_tests,best_test_cso_ga_fitness = tcp_cso_ga.hybrid_ga_search_ga(test_cases,fxn, population_size, generations, mutation_rate)
-
+    best_test_cso_ga, all_tests = tcp_cso_ga.hybrid_ga_search_ga(test_cases,fxn, population_size, generations, mutation_rate)
+    # print(best_test_cso_ga)
+    best_cso_ga_values = [test_cases[test_id] for test_id in best_test_cso_ga]
+    # print(best_cso_ga_values)
+    # sys.exit()
+    
     print ("################################\nResult Section\n################################\n")
 
 
@@ -122,25 +139,25 @@ def main (fxn):
 
     '''Storing Results'''
 
-    subprocess.call("rm -r results",shell=True)
+    # subprocess.call("rm -r results",shell=True)
 
-    subprocess.call("mkdir results",shell=True)
+    # subprocess.call("mkdir results",shell=True)
 
-    with open('results/cso_4', 'wb') as test_file:
+    with open('results/cso'+'_'+str(fxn)+'_'+str(iter), 'wb') as test_file:
         pick.dump(best_test_cso, test_file)
         test_file.close()
-    with open('results/rand', 'wb') as test_file:
+    with open('results/rand'+'_'+str(fxn)+'_'+str(iter), 'wb') as test_file:
         pick.dump(best_test_rand, test_file)
         test_file.close()
-    with open('results/ga_4', 'wb') as test_file:
+    with open('results/ga'+'_'+str(fxn)+'_'+str(iter), 'wb') as test_file:
         pick.dump(best_test_ga, test_file)
         test_file.close()
-    with open('results/ga_cso', 'wb') as test_file:
+    with open('results/ga_cso'+'_'+str(fxn)+'_'+str(iter), 'wb') as test_file:
         pick.dump(best_test_cso_ga, test_file)
         test_file.close()
-    with open('results/all_tests', 'wb') as test_file:
-        pick.dump(all_tests, test_file)
-        test_file.close()
+    # with open('results/all_tests', 'wb') as test_file:
+    #     pick.dump(all_tests, test_file)
+    #     test_file.close()
     with open('alltestcases', 'wb') as outp1:
         pick.dump(testset, outp1, pick.HIGHEST_PROTOCOL)
         
