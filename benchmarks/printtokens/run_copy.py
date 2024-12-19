@@ -12,7 +12,7 @@ def run_iteration(item_and_iter):
     print(f"Processing {item}, iteration {j}")
     main_cso_cov_branches.main(item, j)
 
-def parallel_execute(iter=15):
+def parallel_execute(iter=30):
     """
     Execute iterations in parallel
     
@@ -22,7 +22,7 @@ def parallel_execute(iter=15):
     all_params = []
     for i in obj_fxn.myDict:
         print(i)  # Keeping the original print statement
-        for j in range(iter):
+        for j in range(21,iter):
             all_params.append((i, j))
     
     # Determine the number of cores to use
@@ -36,4 +36,4 @@ def parallel_execute(iter=15):
         pool.map(run_iteration, all_params)
 
 if __name__ == '__main__':
-    parallel_execute(iter=15)
+    parallel_execute(iter=30)
