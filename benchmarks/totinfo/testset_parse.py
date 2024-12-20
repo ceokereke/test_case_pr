@@ -16,7 +16,7 @@ def parse(pname,location):
 	'''Initializations and clean up'''
 
 	testset={}
-	uni=open(location+"universe.txt")
+	uni=open(location+"universe")
 	i=0
 	subprocess.call(["rm",pname+".gcno"])
 	subprocess.call(["rm","-r",pname+".dsYM"])
