@@ -12,7 +12,11 @@ def run_iteration(item_and_iter):
     print(f"Processing {item}, iteration {j}")
     main_cso_cov_branches.main(item, j)
 
+<<<<<<< Updated upstream
 def parallel_execute(iter=30):
+=======
+def parallel_execute(iter=21):
+>>>>>>> Stashed changes
     """
     Execute iterations in parallel
     
@@ -22,7 +26,11 @@ def parallel_execute(iter=30):
     all_params = []
     for i in obj_fxn.myDict:
         print(i)  # Keeping the original print statement
+<<<<<<< Updated upstream
         for j in range(21,iter):
+=======
+        for j in range(15,iter):
+>>>>>>> Stashed changes
             all_params.append((i, j))
     
     # Determine the number of cores to use
@@ -36,4 +44,8 @@ def parallel_execute(iter=30):
         pool.map(run_iteration, all_params)
 
 if __name__ == '__main__':
+<<<<<<< Updated upstream
     parallel_execute(iter=30)
+=======
+    parallel_execute(iter=21)
+>>>>>>> Stashed changes
