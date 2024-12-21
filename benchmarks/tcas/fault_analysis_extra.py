@@ -180,7 +180,7 @@ def main(prior):
 
 	print("Total number of faults: ",num_faults,"\n")
 	print("HIghest suite used",jmax)
-	return apfd, ce,
+	return apfd, ce, jmax
 
 
 
